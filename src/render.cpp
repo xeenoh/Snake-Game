@@ -16,3 +16,18 @@ void Render::DrawGameBoard()
     // Drawing the border of the window
     DrawLine(0, HEIGHT, WIDTH, HEIGHT, DARKGREEN);
 }
+
+void Render::DrawEntity(Entity &e)
+{
+    Vector2 position = e.getPosition();
+    DrawRectangle(position.x, position.y, CELL, CELL, GREEN);
+    DrawRectangleLines(position.x, position.y, CELL, CELL, BLACK);
+}
+
+void Render::DrawSnake(snake &s)
+{
+    for (auto &i : s)
+    {
+        DrawEntity(i);
+    }
+}
