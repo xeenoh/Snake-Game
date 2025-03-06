@@ -24,10 +24,10 @@ void Render::DrawEntity(Entity &e)
     DrawRectangleLines(position.x, position.y, CELL, CELL, BLACK);
 }
 
-void Render::DrawSnake(snake &s)
+void Render::DrawSnake(snake s)
 {
     for (auto &i : s)
     {
-        DrawEntity(i);
+        DrawEntity(*i);
     }
 }

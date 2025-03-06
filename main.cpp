@@ -1,5 +1,7 @@
 #include "include/raylib.h"
-#include "headers/render.h"
+// ! TO BE DELETED
+#include "./headers/render.h"
+#include "./headers/snake.h"
 #include <iostream>
 
 int main()
@@ -12,6 +14,7 @@ int main()
         3. Run the class in the main.cpp
     */
     Render render;
+    Snake snake;
     std::cout << "Hello From the Rewrite\n";
 
     InitWindow(WIDTH, WINDOW_HEIGHT, "SNAKE GAME");
@@ -23,6 +26,7 @@ int main()
         BeginDrawing();
         ClearBackground(BLACK);
         render.DrawGameBoard();
+        render.DrawSnake(std::move(snake.getBody()));
         EndDrawing();
     }
     CloseWindow();

@@ -4,7 +4,7 @@ CXXFLAGS = -std=c++17 -I include/ -g
 LDFLAGS = -L lib/ -lraylib -lGL -lm -lpthread -ldl -lrt
 
 # SOURCE FILES
-GAME_SOURCES  = main.cpp src/render.cpp src/entity.cpp
+GAME_SOURCES  = main.cpp src/render.cpp src/entity.cpp src/snake.cpp
 
 
 #OBJECT FILES
