@@ -2,6 +2,9 @@
 #include "entity.h"
 #include <memory>
 #include <vector>
+#include <deque>
+
+using Body = std::deque<std::shared_ptr<Entity>>;
 
 class Snake
 {
@@ -9,10 +12,10 @@ public:
     Snake();
     void increaseSize();
     void initialState();
-    std::vector<std::shared_ptr<Entity>> getBody() const;
+    Body getBody() const;
     int getSnakeLength() const;
 
 private:
-    std::vector<std::shared_ptr<Entity>> body;
-    int snakeLength;
+    Body m_body;
+    int m_snakeLength;
 };

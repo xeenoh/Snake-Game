@@ -24,9 +24,9 @@ void Render::DrawEntity(Entity &e)
     DrawRectangleLines(position.x, position.y, CELL, CELL, BLACK);
 }
 
-void Render::DrawSnake(snake s)
+void Render::DrawSnake(const Snake &s)
 {
-    for (auto &i : s)
+    for (auto &i : s.getBody())
     {
         DrawEntity(*i);
     }

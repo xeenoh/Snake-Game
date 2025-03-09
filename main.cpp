@@ -2,6 +2,7 @@
 // ! TO BE DELETED
 #include "./headers/render.h"
 #include "./headers/snake.h"
+#include "./headers/ui.h"
 #include <iostream>
 
 int main()
@@ -14,7 +15,9 @@ int main()
         3. Run the class in the main.cpp
     */
     Render render;
+    UIUtils ui;
     Snake snake;
+
     std::cout << "Hello From the Rewrite\n";
 
     InitWindow(WIDTH, WINDOW_HEIGHT, "SNAKE GAME");
@@ -26,7 +29,8 @@ int main()
         BeginDrawing();
         ClearBackground(BLACK);
         render.DrawGameBoard();
-        render.DrawSnake(std::move(snake.getBody()));
+        render.DrawSnake(snake);
+
         EndDrawing();
     }
     CloseWindow();

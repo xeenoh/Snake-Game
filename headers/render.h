@@ -9,15 +9,14 @@
 #define CELL 30
 #define WINDOW_HEIGHT 800
 
-using snake = std::vector<std::shared_ptr<Entity>>;
-
+class Snake;
 // TODO Replace Snake with a snake class
 class Render
 {
 public:
     Render() = default;
     void DrawEntity(Entity &e);
-    void DrawSnake(snake s);
+    void DrawSnake(const Snake &s);
     void DrawGameBoard();
 
     // TODO : Draw Textures of COLLECTABLES

@@ -7,7 +7,7 @@ class Entity
 public:
     Entity(Vector2 position_);
     Vector2 getPosition() const;
-    void setPosition(Vector2 pos);
+    Entity &setPosition(Vector2 pos);
 
 private:
     Vector2 position;
