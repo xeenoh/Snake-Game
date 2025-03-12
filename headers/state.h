@@ -36,7 +36,7 @@ private:
     Render render;
 
     int targetFrames;
-
+    int counterFrames;
     Direction dir;
     // COLLISION DETECTION//
     bool checkCollision();
@@ -46,7 +46,7 @@ private:
     // SNAKE  MOVEMENT //
     Vector2 nextHeadPos();
     void updateSnake();
-    bool movePerFrame(); // A flag for the snake to take a step each x frames
+    void movePerFrame();
 
     std::shared_ptr<Entity> get_head();
 

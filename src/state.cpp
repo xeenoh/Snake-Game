@@ -1,6 +1,8 @@
 #include "../headers/state.h"
 
-PlayState::PlayState() : targetFrames(60), dir(RIGHT)
+#define NORMAL_SPEED 150
+#define HIGH_SPEED 100
+PlayState::PlayState() : targetFrames(NORMAL_SPEED), dir(RIGHT), counterFrames(0)
 {
 
     m_snake = std::make_shared<Snake>();
@@ -43,9 +45,9 @@ bool PlayState::wallCollision()
     m_snakeHead = get_head();
     Vector2 head_pos = m_snakeHead->getPosition();
 
-    if (head_pos.x <= CELL || head_pos.x + CELL > WIDTH)
+    if (head_pos.x < 0 || head_pos.x + CELL > WIDTH)
         return true;
-    else if (head_pos.y <= CELL || head_pos.y + CELL > HEIGHT)
+    else if (head_pos.y < 0 || head_pos.y + CELL > HEIGHT)
         return true;
     return false;
 }
@@ -62,25 +64,29 @@ void PlayState::m_KeyboardInput()
         dir = UP;
     else if (IsKeyPressed(KEY_DOWN) && dir != UP)
         dir = DOWN;
+    else if (IsKeyDown(KEY_LEFT_SHIFT))
+        setTargetFrames(HIGH_SPEED);
+    else if (IsKeyReleased(KEY_LEFT_SHIFT))
+        setTargetFrames(NORMAL_SPEED);
 }
 //========================================== MOVEMENT ==========================================//
-bool PlayState::movePerFrame()
+void PlayState::movePerFrame()
 {
-    // if the target fps to be 60 frames , then each 60 frames we have one step movement for the snake
-    if (targetFrames <= 0)
+    if (counterFrames >= targetFrames)
     {
-        setTargetFrames(60);
-        return true;
+        updateSnake();
+        counterFrames = 0;
     }
     else
-        --targetFrames;
+    {
 
-    return false;
+        counterFrames++;
+    }
 }
 
 void PlayState::setTargetFrames(int val)
 {
-    targetFrames = val;
+    this->targetFrames = val;
 }
 
 Vector2 PlayState::nextHeadPos()
@@ -101,6 +107,10 @@ Vector2 PlayState::nextHeadPos()
 
 void PlayState::updateSnake()
 {
+    if (checkCollision())
+    {
+        std::cout << "You LOST at pos " << m_snakeHead->getPosition().x << ' ' << m_snakeHead->getPosition().y << "\n";
+    }
     std::shared_ptr<Entity> tail = m_snake->getBody().back();
     Vector2 tailPos = tail->getPosition();
 
@@ -127,15 +137,11 @@ void PlayState::m_Update()
 {
 
     // 1) CHECK FOR COLLISIONS
-    if (checkCollision())
-    {
-        std::cout << "You LOST\n";
-    }
     // 1) CHECK FOR KEYBOARD INPUTS
     m_KeyboardInput();
     // 2) UPDATE SNAKE POSITION
-    if (movePerFrame())
-        updateSnake();
+    movePerFrame();
+    // updateSnake();
     // 3) RENDER THE SNAKE
     m_Render();
 }
