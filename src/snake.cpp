@@ -1,6 +1,6 @@
 #include "../headers/snake.h"
 
-Snake::Snake() : m_snakeLength(3)
+Snake::Snake()
 {
 
     initialState();
@@ -20,10 +20,9 @@ void Snake::initialState()
     m_body.emplace_back(std::make_shared<Entity>(initialpositions[0]));
     m_body.emplace_back(std::make_shared<Entity>(initialpositions[1]));
     m_body.emplace_back(std::make_shared<Entity>(initialpositions[2]));
-    m_snakeLength = 3;
 }
 
-Body Snake::getBody() const
+const Body &Snake::getBody() const
 {
     return m_body;
 }
@@ -36,10 +35,14 @@ void Snake::increaseSize()
     Vector2 newpos = Vector2Add(lastSegment, direction);
     std::shared_ptr<Entity> newSegement = std::make_shared<Entity>(newpos);
     m_body.emplace_back(newSegement);
-    ++m_snakeLength;
 }
 
 int Snake::getSnakeLength() const
 {
-    return m_snakeLength;
+    return m_body.size();
+}
+
+void Snake::setBody(Body newBody)
+{
+    m_body = std::move(newBody);
 }

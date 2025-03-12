@@ -12,10 +12,11 @@ public:
     Snake();
     void increaseSize();
     void initialState();
-    Body getBody() const;
+    const Body &getBody() const;
     int getSnakeLength() const;
+
+    void setBody(Body newBody);
 
 private:
     Body m_body;
-    int m_snakeLength;
 };

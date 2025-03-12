@@ -7,7 +7,7 @@ Vector2 Entity::getPosition() const
     return position;
 }
 
-Entity &Entity::setPosition(Vector2 pos)
+Entity &Entity::setPosition(const Vector2 &pos)
 {
     this->position = pos;
     return *this;
