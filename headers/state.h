@@ -31,6 +31,7 @@ inline State::~State() {}
 class PlayState : public State
 {
 private:
+    int current_score;
     std::shared_ptr<Snake> m_snake;
     std::shared_ptr<Entity> m_snakeHead;
     Render render;
@@ -50,6 +51,8 @@ private:
 
     std::shared_ptr<Entity> get_head();
 
+    void ScoreUI();
+
 public:
     PlayState();
 
@@ -58,6 +61,7 @@ public:
     void m_KeyboardInput() override;
 
     void setTargetFrames(int val);
+    bool game_over;
 };
 
 class RenderUIMenuState : public State
@@ -65,5 +69,9 @@ class RenderUIMenuState : public State
 };
 
 class RenderUIPauseMenu : public State
+{
+};
+
+class GameOverState : public State
 {
 };

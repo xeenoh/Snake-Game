@@ -2,7 +2,8 @@
 
 #define NORMAL_SPEED 150
 #define HIGH_SPEED 100
-PlayState::PlayState() : targetFrames(NORMAL_SPEED), dir(RIGHT), counterFrames(0)
+
+PlayState::PlayState() : targetFrames(NORMAL_SPEED), dir(RIGHT), counterFrames(0), current_score(0), game_over(false)
 {
 
     m_snake = std::make_shared<Snake>();
@@ -68,6 +69,10 @@ void PlayState::m_KeyboardInput()
         setTargetFrames(HIGH_SPEED);
     else if (IsKeyReleased(KEY_LEFT_SHIFT))
         setTargetFrames(NORMAL_SPEED);
+    else if (IsKeyPressed(KEY_P))
+    {
+        this->current_score++;
+    }
 }
 //========================================== MOVEMENT ==========================================//
 void PlayState::movePerFrame()
@@ -110,6 +115,8 @@ void PlayState::updateSnake()
     if (checkCollision())
     {
         std::cout << "You LOST at pos " << m_snakeHead->getPosition().x << ' ' << m_snakeHead->getPosition().y << "\n";
+        this->current_score = 0;
+        game_over = true;
     }
     std::shared_ptr<Entity> tail = m_snake->getBody().back();
     Vector2 tailPos = tail->getPosition();
@@ -136,12 +143,20 @@ void PlayState::m_Render()
 void PlayState::m_Update()
 {
 
-    // 1) CHECK FOR COLLISIONS
-    // 1) CHECK FOR KEYBOARD INPUTS
+    if (game_over)
+        return;
     m_KeyboardInput();
-    // 2) UPDATE SNAKE POSITION
     movePerFrame();
-    // updateSnake();
-    // 3) RENDER THE SNAKE
     m_Render();
+    ScoreUI();
+}
+
+void PlayState::ScoreUI()
+{
+
+    int score = this->current_score;
+    std::string scoreText = std::to_string(score);
+
+    DrawText("Score", 20, 700, 40, RED);
+    DrawText(scoreText.c_str(), 200, 700, 40, ORANGE);
 }
