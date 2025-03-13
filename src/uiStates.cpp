@@ -25,16 +25,18 @@ int UIUtils::RenderMainMenu()
     // Render Window Box
     GuiLoadStyle("./Styles/style_terminal.rgs");
     GuiSetStyle(DEFAULT, TEXT_SIZE, 40);
-    int window_box = GuiWindowBox((Rectangle){0, 0, WIDTH, WINDOW_HEIGHT}, "");
+    if (GuiWindowBox((Rectangle){0, 0, WIDTH, WINDOW_HEIGHT}, ""))
+        return 1;
 
     DrawText("Snake", 350, 200, 70, GREEN);
     // Render Button 1 : Play
-    int playButton = GuiButton((Rectangle){350, 450, 200, 70}, "Play");
+    if (GuiButton((Rectangle){350, 450, 200, 70}, "Play"))
+        return 2;
     // Render Button 2: Exit
+    if (GuiButton((Rectangle){350, 550, 200, 70}, "Exit"))
+        return 3;
 
-    int exitButton = GuiButton((Rectangle){350, 550, 200, 70}, "Exit");
-
-    return window_box || exitButton;
+    return -1;
 }
 // ===================================== MAIN MENU STATE ================================ //
 

@@ -28,8 +28,18 @@ int main()
 
         BeginDrawing();
         ClearBackground(BLACK);
-        if (ui.RenderMainMenu())
-            break;
+        if (iMenu)
+        {
+            if (ui.RenderMainMenu() == 1 || ui.RenderMainMenu() == 3)
+                break;
+            else if (ui.RenderMainMenu() == 2)
+                iMenu = false;
+        }
+        else
+        {
+            game->m_Update();
+        }
+
         EndDrawing();
     }
     CloseWindow();
