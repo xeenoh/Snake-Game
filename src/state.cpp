@@ -136,6 +136,17 @@ void PlayState::m_Render()
     // Render the Snake
     render.DrawSnake(*m_snake);
 
+    if (m_collectables.empty())
+    {
+        Vector2 collectable_position = randomCollectablePosition();
+        m_collectables.push_back(collectable_position);
+    }
+    for (auto const &i : m_collectables)
+    {
+
+        render.DrawCollectable(i);
+    }
+
     // TODO Render the collectables
     // TODO Render UI Score board
 }
@@ -159,4 +170,13 @@ void PlayState::ScoreUI()
 
     DrawText("Score", 20, 700, 40, RED);
     DrawText(scoreText.c_str(), 200, 700, 40, ORANGE);
+}
+
+Vector2 PlayState::randomCollectablePosition()
+{
+    float posx = (float)GetRandomValue(0, WIDTH - CELL);
+    float posy = (float)GetRandomValue(0, HEIGHT - CELL);
+
+    std::cout << "\n\nCollectable Position: " << posx << ' ' << posy << '\n';
+    return Vector2{posx, posy};
 }

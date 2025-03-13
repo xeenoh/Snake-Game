@@ -2,7 +2,6 @@
 #include "../headers/entity.h"
 #include "../headers/snake.h"
 #include "../headers/render.h"
-#include "../headers/ui.h"
 #include <iostream>
 
 enum Direction
@@ -34,6 +33,7 @@ private:
     int current_score;
     std::shared_ptr<Snake> m_snake;
     std::shared_ptr<Entity> m_snakeHead;
+    std::vector<Vector2> m_collectables;
     Render render;
 
     int targetFrames;
@@ -53,19 +53,16 @@ private:
 
     void ScoreUI();
 
+    Vector2 randomCollectablePosition();
+
 public:
     PlayState();
 
     void m_Render() override; // Renders Snake , Board , Score UI
     void m_Update() override; // Play State Loop
     void m_KeyboardInput() override;
-
     void setTargetFrames(int val);
-    bool game_over;
-};
-
-class RenderUIMenuState : public State
-{
+    bool game_over; // Game over flag
 };
 
 class RenderUIPauseMenu : public State

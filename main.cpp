@@ -1,6 +1,7 @@
 #include "include/raylib.h"
 // ! TO BE DELETED
-#include "./headers/state.h"
+#include "headers/uiStates.h"
+#include "raygui.h"
 #include <iostream>
 
 int main()
@@ -13,19 +14,22 @@ int main()
         3. Run the class in the main.cpp
     */
 
+    UIUtils ui;
     std::shared_ptr<State> game;
     game = std::make_shared<PlayState>();
     std::cout << "Hello From the Rewrite\n";
 
     InitWindow(WIDTH, WINDOW_HEIGHT, "SNAKE GAME");
-
+    bool iMenu = true;
     while (!WindowShouldClose())
     {
         if (IsKeyPressed(KEY_X))
             break;
+
         BeginDrawing();
         ClearBackground(BLACK);
-        game->m_Update();
+        if (ui.RenderMainMenu())
+            break;
         EndDrawing();
     }
     CloseWindow();
