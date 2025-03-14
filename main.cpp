@@ -16,13 +16,16 @@ int main()
 
     UIUtils ui;
     std::shared_ptr<State> game;
-    game = std::make_shared<PlayState>();
     std::cout << "Hello From the Rewrite\n";
 
     InitWindow(WIDTH, WINDOW_HEIGHT, "SNAKE GAME");
+    GuiLoadStyle("./Styles/style_terminal.rgs");
+
+    game = std::make_shared<PlayState>();
     bool iMenu = true;
     while (!WindowShouldClose())
     {
+
         if (IsKeyPressed(KEY_X))
             break;
 
@@ -30,13 +33,14 @@ int main()
         ClearBackground(BLACK);
         if (iMenu)
         {
-            if (ui.RenderMainMenu() == 1 || ui.RenderMainMenu() == 3)
+            if (ui.test() == 1 || ui.test() == 3)
                 break;
-            else if (ui.RenderMainMenu() == 2)
+            else if (ui.test() == 2)
                 iMenu = false;
         }
         else
         {
+
             game->m_Update();
         }
 

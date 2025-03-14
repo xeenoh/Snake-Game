@@ -2,20 +2,42 @@
 
 Render::Render()
 {
-    const char *path = "../Assets/textures/heart.png";
+    LoadCollectableTexture();
+}
+
+void Render::LoadCollectableTexture()
+{
+
+    if (texture.id != 0)
+    {
+        std::cout << "Already loaded\n";
+        return;
+    }
+    const char *path = "./Assets/textures/heart.png";
+    if (!FileExists(path))
+    {
+        std::cerr << "This file doesn't exist\n";
+        return;
+    }
 
     Image image = LoadImage(path);
-    ImageResize(&image, CELL, CELL);
-    texture = std::make_shared<Texture2D>(LoadTextureFromImage(image));
-    if (texture->id == 0)
+    if (image.data == nullptr)
     {
-        std::cerr << "\n\nFailed to load the texture srry!!\n";
+        std::cerr << "Failed to load image data\n";
+        return;
     }
-    else
-    {
 
+    ImageResize(&image, CELL, CELL);
+    this->texture = LoadTextureFromImage(image);
+
+    if (texture.id == 0)
+    {
+        std::cerr << "\n\nFailed to load the texture!!\n";
         UnloadImage(image);
+        return;
     }
+
+    UnloadImage(image);
 }
 void Render::DrawGameBoard()
 {
@@ -51,10 +73,10 @@ void Render::DrawSnake(const Snake &s)
 
 void Render::DrawCollectable(const Vector2 &pos)
 {
-    DrawTexture(*texture, pos.x, pos.y, WHITE);
+    DrawTexture(texture, pos.x, pos.y, WHITE);
 }
 Render::~Render()
 {
-    if (texture->id != 0)
-        UnloadTexture(*texture);
+    if (texture.id != 0)
+        UnloadTexture(texture);
 }

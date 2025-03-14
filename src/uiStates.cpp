@@ -18,7 +18,24 @@ bool UIUtils::Button(float Width, float Height, Vector2 pos, const char *title)
     return GuiButton((Rectangle){pos.x, pos.y, Width, Height}, title);
 }
 
-int UIUtils::RenderMainMenu()
+int UIUtils::test()
+{
+
+    if (GuiWindowBox((Rectangle){200, 100, 500, 500}, "You Lost"))
+        return 1;
+
+    DrawText("Game Over", 350, 300, 40, RED);
+    if (GuiButton((Rectangle){250, 500, 150, 40}, "Restart"))
+        return 2;
+    // Render Button 2: Exit
+    if (GuiButton((Rectangle){550, 500, 100, 40}, "Exit"))
+        return 3;
+
+    return -1;
+}
+// ===================================== MAIN MENU STATE ================================ //
+
+int UIMenuState::RenderMainMenu()
 {
     // TODO Render a Background
 
@@ -37,15 +54,6 @@ int UIUtils::RenderMainMenu()
         return 3;
 
     return -1;
-}
-// ===================================== MAIN MENU STATE ================================ //
-
-void RenderUIMenuState::RenderMainMenu()
-{
-    // TODO Render a Background
-
-    // Render Window Box
-    int window_box = GuiWindowBox((Rectangle){0, 0, WIDTH, HEIGHT}, "Hello");
 
     // Render Text Box with "Snake game"
 
@@ -54,7 +62,28 @@ void RenderUIMenuState::RenderMainMenu()
     // Render Button 2: Exit
 }
 
-void RenderUIMenuState::m_Render()
+void UIMenuState::m_Render()
 {
     RenderMainMenu();
+}
+
+void UIMenuState::m_Update() {}
+void UIMenuState::m_KeyboardInput() {}
+
+/////////////////////////////////////////////////////////////////////////////////////
+
+int UIGameOverState::RenderGameOverMenu()
+{
+
+    GuiLoadStyle("./Styles/style_terminal.rgs");
+    if (GuiWindowBox((Rectangle){0, 0, 500, 500}, "You Lost"))
+        return 1;
+
+    if (GuiButton((Rectangle){100, 450, 200, 70}, "Restart"))
+        return 2;
+    // Render Button 2: Exit
+    if (GuiButton((Rectangle){150, 450, 200, 70}, "Exit"))
+        return 3;
+
+    return -1;
 }

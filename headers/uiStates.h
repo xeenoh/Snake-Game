@@ -11,19 +11,31 @@ public:
                    const char *title, const char *message, const char *buttons);
 
     bool Button(float Width, float Height, Vector2 pos, const char *title);
-
-    int RenderMainMenu();
+    int test();
 };
 
-class RenderUIMenuState : public State
+class UIMenuState : public State
 {
 private:
     UIUtils ui;
 
-    void RenderMainMenu();
+    int RenderMainMenu();
 
 public:
-    RenderUIMenuState() = default;
+    UIMenuState() = default;
+    void m_Update() override;
+    void m_Render() override;
+    void m_KeyboardInput() override;
+};
+
+class UIGameOverState : public State
+{
+private:
+    UIUtils ui;
+    int RenderGameOverMenu();
+
+public:
+    UIGameOverState() = default;
     void m_Update() override;
     void m_Render() override;
     void m_KeyboardInput() override;

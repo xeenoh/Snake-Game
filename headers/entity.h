@@ -1,6 +1,7 @@
 #pragma once
 #include "../include/raylib.h"
 #include "../include/raymath.h"
+#include <cassert>
 
 class Entity
 {

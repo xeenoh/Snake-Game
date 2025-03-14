@@ -5,6 +5,7 @@
 #include "../headers/snake.h"
 #include <iostream>
 #include <vector>
+
 #define WIDTH 900
 #define HEIGHT 600
 #define CELL 30
@@ -25,6 +26,8 @@ public:
     // TODO : Draw Textures of COLLECTABLES
     ~Render();
 
+    void LoadCollectableTexture();
+
 private:
-    std::shared_ptr<Texture2D> texture;
+    Texture2D texture;
 };
