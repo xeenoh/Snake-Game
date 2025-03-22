@@ -12,7 +12,6 @@
 #define WINDOW_HEIGHT 800
 
 class Snake;
-// TODO Replace Snake with a snake class
 class Render
 {
 public:
@@ -24,10 +23,11 @@ public:
     void DrawCollectable(const Vector2 &pos);
 
     // TODO : Draw Textures of COLLECTABLES
+
     ~Render();
 
     void LoadCollectableTexture();
 
 private:
-    Texture2D texture;
+    std::unique_ptr<Texture2D> texture;
 };

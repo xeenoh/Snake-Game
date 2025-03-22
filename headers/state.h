@@ -22,6 +22,7 @@ public:
     virtual void m_Render() = 0;
     virtual void m_Update() = 0;
     virtual void m_KeyboardInput() = 0;
+    virtual int getStateIdentifier() const = 0;
     virtual ~State() = 0;
 };
 
@@ -62,13 +63,6 @@ public:
     void m_Update() override; // Play State Loop
     void m_KeyboardInput() override;
     void setTargetFrames(int val);
+    int getStateIdentifier() const override;
     bool game_over; // Game over flag
-};
-
-class RenderUIPauseMenu : public State
-{
-};
-
-class GameOverState : public State
-{
 };

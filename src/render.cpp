@@ -8,7 +8,7 @@ Render::Render()
 void Render::LoadCollectableTexture()
 {
 
-    if (texture.id != 0)
+    if (!texture)
     {
         std::cout << "Already loaded\n";
         return;
@@ -28,9 +28,9 @@ void Render::LoadCollectableTexture()
     }
 
     ImageResize(&image, CELL, CELL);
-    this->texture = LoadTextureFromImage(image);
+    texture = std::make_unique<Texture2D>(LoadTextureFromImage(image));
 
-    if (texture.id == 0)
+    if (texture->id == 0)
     {
         std::cerr << "\n\nFailed to load the texture!!\n";
         UnloadImage(image);
@@ -73,10 +73,11 @@ void Render::DrawSnake(const Snake &s)
 
 void Render::DrawCollectable(const Vector2 &pos)
 {
-    DrawTexture(texture, pos.x, pos.y, WHITE);
+    if (texture)
+        DrawTexture(*texture, pos.x, pos.y, WHITE);
 }
 Render::~Render()
 {
-    if (texture.id != 0)
-        UnloadTexture(texture);
+    if (texture)
+        UnloadTexture(*texture);
 }

@@ -1,8 +1,9 @@
 #include "include/raylib.h"
 // ! TO BE DELETED
 #include "headers/uiStates.h"
-#include "raygui.h"
+#include "include/raygui.h"
 #include <iostream>
+#include "headers/engine.h"
 
 int main()
 {
@@ -14,38 +15,7 @@ int main()
         3. Run the class in the main.cpp
     */
 
-    UIUtils ui;
-    std::shared_ptr<State> game;
-    std::cout << "Hello From the Rewrite\n";
-
-    InitWindow(WIDTH, WINDOW_HEIGHT, "SNAKE GAME");
-    GuiLoadStyle("./Styles/style_terminal.rgs");
-
-    game = std::make_shared<PlayState>();
-    bool iMenu = true;
-    while (!WindowShouldClose())
-    {
-
-        if (IsKeyPressed(KEY_X))
-            break;
-
-        BeginDrawing();
-        ClearBackground(BLACK);
-        if (iMenu)
-        {
-            if (ui.test() == 1 || ui.test() == 3)
-                break;
-            else if (ui.test() == 2)
-                iMenu = false;
-        }
-        else
-        {
-
-            game->m_Update();
-        }
-
-        EndDrawing();
-    }
-    CloseWindow();
-    return 0;
+    Engine engine;
+    engine.init();
+    engine.startGame();
 }

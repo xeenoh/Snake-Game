@@ -69,10 +69,10 @@ void PlayState::m_KeyboardInput()
         setTargetFrames(HIGH_SPEED);
     else if (IsKeyReleased(KEY_LEFT_SHIFT))
         setTargetFrames(NORMAL_SPEED);
-    else if (IsKeyPressed(KEY_P))
-    {
-        this->current_score++;
-    }
+    // else if (IsKeyPressed(KEY_P))
+    // {
+    //     this->current_score++;
+    // }
 }
 //========================================== MOVEMENT ==========================================//
 void PlayState::movePerFrame()
@@ -180,3 +180,5 @@ Vector2 PlayState::randomCollectablePosition()
     std::cout << "\n\nCollectable Position: " << posx << ' ' << posy << '\n';
     return Vector2{posx, posy};
 }
+
+int PlayState::getStateIdentifier() const { return 1; }

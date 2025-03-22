@@ -64,12 +64,20 @@ int UIMenuState::RenderMainMenu()
 
 void UIMenuState::m_Render()
 {
-    RenderMainMenu();
+    int main_menu = RenderMainMenu();
+    if (main_menu == 1 || main_menu == 3)
+        return;
 }
 
-void UIMenuState::m_Update() {}
+void UIMenuState::m_Update()
+{
+    m_KeyboardInput();
+    m_Render();
+}
+
 void UIMenuState::m_KeyboardInput() {}
 
+int UIMenuState::getStateIdentifier() const { return 2; }
 /////////////////////////////////////////////////////////////////////////////////////
 
 int UIGameOverState::RenderGameOverMenu()
@@ -87,3 +95,17 @@ int UIGameOverState::RenderGameOverMenu()
 
     return -1;
 }
+
+void UIGameOverState::m_KeyboardInput() {}
+void UIGameOverState::m_Render()
+{
+
+    RenderGameOverMenu();
+}
+
+void UIGameOverState::m_Update()
+{
+    m_KeyboardInput();
+    m_Render();
+}
+int UIGameOverState::getStateIdentifier() const { return 3; }
