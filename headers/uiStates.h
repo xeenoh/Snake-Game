@@ -27,6 +27,7 @@ public:
     void m_Render() override;
     void m_KeyboardInput() override;
     int getStateIdentifier() const override;
+    bool updateState = false;
 };
 
 class UIGameOverState : public State
@@ -41,4 +42,5 @@ public:
     void m_Render() override;
     void m_KeyboardInput() override;
     int getStateIdentifier() const override;
+    bool updateState = false;
 };

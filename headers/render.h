@@ -11,6 +11,7 @@
 #define CELL 30
 #define WINDOW_HEIGHT 800
 
+#define TEXTURE_PATH "./Assets/textures/heart.png"
 class Snake;
 class Render
 {
@@ -20,7 +21,7 @@ public:
     void DrawSnake(const Snake &s);
     void DrawGameBoard();
 
-    void DrawCollectable(const Vector2 &pos);
+    void DrawCollectable(Vector2 &pos);
 
     // TODO : Draw Textures of COLLECTABLES
 

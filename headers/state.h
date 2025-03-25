@@ -24,6 +24,7 @@ public:
     virtual void m_KeyboardInput() = 0;
     virtual int getStateIdentifier() const = 0;
     virtual ~State() = 0;
+    bool updateState;
 };
 
 inline State::~State() {}
@@ -31,30 +32,38 @@ inline State::~State() {}
 class PlayState : public State
 {
 private:
+    Render render;
+    Direction dir;
+
     int current_score;
     std::shared_ptr<Snake> m_snake;
     std::shared_ptr<Entity> m_snakeHead;
     std::vector<Vector2> m_collectables;
-    Render render;
+    std::shared_ptr<Entity> get_head();
 
     int targetFrames;
     int counterFrames;
-    Direction dir;
+
     // COLLISION DETECTION//
     bool checkCollision();
     bool bodyCollision();
     bool wallCollision();
+
+    bool checkWin();
+    bool increaseScore(const Vector2 &pos); // check collisoin with the collectable
 
     // SNAKE  MOVEMENT //
     Vector2 nextHeadPos();
     void updateSnake();
     void movePerFrame();
 
-    std::shared_ptr<Entity> get_head();
+    Vector2 randomCollectablePosition();
 
     void ScoreUI();
+    void ControlsUI();
 
-    Vector2 randomCollectablePosition();
+    bool win_flag = false;
+    bool updateState = false;
 
 public:
     PlayState();

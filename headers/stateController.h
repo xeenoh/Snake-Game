@@ -20,6 +20,7 @@ public:
     void change_state(int state_flag);
     void init();
     void run_current_state();
+    State &getstate();
 
 private:
     std::stack<myStates> state_container;

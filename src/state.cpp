@@ -1,9 +1,10 @@
 #include "../headers/state.h"
 
 #define NORMAL_SPEED 150
-#define HIGH_SPEED 100
+#define HIGH_SPEED 90
+#define TOTAL_CELLS (WIDTH * HEIGHT) / CELL
 
-PlayState::PlayState() : targetFrames(NORMAL_SPEED), dir(RIGHT), counterFrames(0), current_score(0), game_over(false)
+PlayState::PlayState() : targetFrames(NORMAL_SPEED), dir(RIGHT), counterFrames(0), current_score(0), game_over(false), win_flag(false)
 {
 
     m_snake = std::make_shared<Snake>();
@@ -29,10 +30,11 @@ bool PlayState::bodyCollision()
     const int current_length = m_snake->getSnakeLength();
     if (current_length == 3)
         return false;
-
-    for (size_t i = 1; i < m_snake->getSnakeLength(); ++i)
+    Body snake_body = m_snake->getBody();
+    Vector2 pos = snake_body[0]->getPosition();
+    for (size_t i = 1; i < snake_body.size(); ++i)
     {
-        if (m_snakeHead->getPosition() == m_snake->getBody()[i]->getPosition())
+        if (pos == snake_body[i]->getPosition())
         {
             return true;
         }
@@ -46,10 +48,11 @@ bool PlayState::wallCollision()
     m_snakeHead = get_head();
     Vector2 head_pos = m_snakeHead->getPosition();
 
-    if (head_pos.x < 0 || head_pos.x + CELL > WIDTH)
+    if (head_pos.x < 0 || head_pos.x > WIDTH - CELL || head_pos.y < 0 || head_pos.y > HEIGHT - CELL)
+    {
+        std::cout << "Wall Collision\n";
         return true;
-    else if (head_pos.y < 0 || head_pos.y + CELL > HEIGHT)
-        return true;
+    }
     return false;
 }
 
@@ -69,10 +72,6 @@ void PlayState::m_KeyboardInput()
         setTargetFrames(HIGH_SPEED);
     else if (IsKeyReleased(KEY_LEFT_SHIFT))
         setTargetFrames(NORMAL_SPEED);
-    // else if (IsKeyPressed(KEY_P))
-    // {
-    //     this->current_score++;
-    // }
 }
 //========================================== MOVEMENT ==========================================//
 void PlayState::movePerFrame()
@@ -108,8 +107,6 @@ Vector2 PlayState::nextHeadPos()
         return Vector2Add(currentPos, Vector2{0, CELL});
 }
 
-// TODO SNAKE MOVEMENT
-
 void PlayState::updateSnake()
 {
     if (checkCollision())
@@ -118,6 +115,7 @@ void PlayState::updateSnake()
         this->current_score = 0;
         game_over = true;
     }
+
     std::shared_ptr<Entity> tail = m_snake->getBody().back();
     Vector2 tailPos = tail->getPosition();
 
@@ -136,49 +134,96 @@ void PlayState::m_Render()
     // Render the Snake
     render.DrawSnake(*m_snake);
 
+    // TODO Render the collectables
     if (m_collectables.empty())
     {
         Vector2 collectable_position = randomCollectablePosition();
         m_collectables.push_back(collectable_position);
     }
-    for (auto const &i : m_collectables)
+    for (auto &i : m_collectables)
     {
 
         render.DrawCollectable(i);
     }
-
-    // TODO Render the collectables
-    // TODO Render UI Score board
 }
 
 void PlayState::m_Update()
 {
 
     if (game_over)
+    {
+        game_over = false;
+
+        m_snake->initialState();
+        setTargetFrames(NORMAL_SPEED);
+        m_collectables.clear();
+        dir = RIGHT; // Reset the Direction
+        current_score = 0;
         return;
-    m_KeyboardInput();
+    }
+    else if (checkWin())
+    {
+        std::cout << "YOU WON\n";
+    }
+    if (increaseScore(m_collectables.back()))
+    {
+        m_snake->increaseSize();
+        current_score++;
+    }
     movePerFrame();
-    m_Render();
     ScoreUI();
+    ControlsUI();
 }
 
 void PlayState::ScoreUI()
 {
 
-    int score = this->current_score;
-    std::string scoreText = std::to_string(score);
+    std::string scoreText = std::to_string(current_score);
 
     DrawText("Score", 20, 700, 40, RED);
     DrawText(scoreText.c_str(), 200, 700, 40, ORANGE);
 }
 
+void PlayState::ControlsUI()
+{
+    DrawText("Controls", 450, 610, 50, WHITE);
+    DrawText("Movement: ARROWS", 450, 660, 30, WHITE);
+    DrawText("Speed Boost : Hold LSHIFT", 450, 700, 30, WHITE);
+    DrawText("Main Menu : Q", 450, 740, 30, WHITE);
+}
 Vector2 PlayState::randomCollectablePosition()
 {
-    float posx = (float)GetRandomValue(0, WIDTH - CELL);
-    float posy = (float)GetRandomValue(0, HEIGHT - CELL);
+    int posx = GetRandomValue(0, (WIDTH / CELL) - 1);
+    int posy = GetRandomValue(0, (HEIGHT / CELL) - 1);
 
-    std::cout << "\n\nCollectable Position: " << posx << ' ' << posy << '\n';
-    return Vector2{posx, posy};
+    Vector2 pos = {posx * CELL, posy * CELL};
+
+    // check if valid position (Not on the snake body)
+    for (const auto &i : m_snake->getBody())
+    {
+        if (i->getPosition() == pos)
+            randomCollectablePosition();
+    }
+    std::cout << "\n\nCollectable Position: " << pos.x << ' ' << pos.y << '\n';
+    return pos;
 }
 
 int PlayState::getStateIdentifier() const { return 1; }
+
+bool PlayState::checkWin()
+{
+    if (m_snake->getBody().size() == TOTAL_CELLS)
+        return true;
+    return false;
+}
+
+bool PlayState::increaseScore(const Vector2 &pos)
+{
+    Vector2 pos_head = m_snake->getBody()[0]->getPosition();
+    if (pos == pos_head)
+    {
+        m_collectables.clear();
+        return true;
+    }
+    return false;
+}
