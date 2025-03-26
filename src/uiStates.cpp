@@ -107,11 +107,11 @@ void UIGameOverState::m_Render()
 
 void UIGameOverState::m_Update()
 {
-    // if (!soundPlayedonce)
-    // {
-    //     gameoversound.PlayGameOverSound();
-    //     soundPlayedonce = true;
-    // }
+    if (!soundPlayedonce)
+    {
+        gameoversound.PlayGameOverSound();
+        soundPlayedonce = true;
+    }
     int gameover = RenderGameOverMenu();
     if (gameover == 1 || gameover == 3)
     {
@@ -124,3 +124,7 @@ void UIGameOverState::m_Update()
     }
 }
 int UIGameOverState::getStateIdentifier() const { return 3; }
+UIGameOverState::~UIGameOverState()
+{
+    CloseAudioDevice();
+}

@@ -46,4 +46,5 @@ public:
     void m_KeyboardInput() override;
     int getStateIdentifier() const override;
     bool updateState = false;
+    ~UIGameOverState();
 };

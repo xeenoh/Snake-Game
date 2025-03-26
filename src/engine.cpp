@@ -58,7 +58,7 @@ void Engine::startGame()
                 state_controller.add_new_state(2);
             if (playState->game_over)
             {
-                state_controller.add_new_state(3);
+                state_controller.change_state(3);
             }
         }
         else if (current_state == 3)
@@ -68,7 +68,7 @@ void Engine::startGame()
             if (gameoverstate->updateState)
             {
                 std::cout << "Current STATE running is : " << state_controller.get_current_state() << '\n';
-                state_controller.pop_state(); // return back to the previous state which was play state
+                state_controller.change_state(1); // return back to the previous state which was play state
                 std::cout << "Current STATE running is : " << state_controller.get_current_state() << '\n';
             }
         }
