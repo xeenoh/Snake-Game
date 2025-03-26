@@ -14,7 +14,7 @@ This is a classic Snake game built using C++ and the Raylib graphics library. Th
 - **Sound Effects** for collectables, game over, and background music.
 - **Graphical UI Elements** for menus and score display.
 
-## Installation & Setup
+## Installation & Setup (LINUX)
 
 ### Prerequisites
 
