@@ -9,6 +9,7 @@ PlayState::PlayState() : targetFrames(NORMAL_SPEED), dir(RIGHT), counterFrames(0
 
     m_snake = std::make_shared<Snake>();
     m_snakeHead = get_head();
+    gameSound.PlayGameMusic();
 }
 
 //=======================================HELPER FUNCTION==================================//
@@ -134,7 +135,6 @@ void PlayState::m_Render()
     // Render the Snake
     render.DrawSnake(*m_snake);
 
-    // TODO Render the collectables
     if (m_collectables.empty())
     {
         Vector2 collectable_position = randomCollectablePosition();
@@ -155,6 +155,7 @@ void PlayState::m_Update()
         game_over = false;
 
         m_snake->initialState();
+        m_snakeHead = get_head();
         setTargetFrames(NORMAL_SPEED);
         m_collectables.clear();
         dir = RIGHT; // Reset the Direction
@@ -170,6 +171,7 @@ void PlayState::m_Update()
         m_snake->increaseSize();
         current_score++;
     }
+    UpdateMusicStream(gameSound.game_music);
     movePerFrame();
     ScoreUI();
     ControlsUI();
@@ -222,6 +224,7 @@ bool PlayState::increaseScore(const Vector2 &pos)
     Vector2 pos_head = m_snake->getBody()[0]->getPosition();
     if (pos == pos_head)
     {
+        gameSound.PlayCollectableSound();
         m_collectables.clear();
         return true;
     }

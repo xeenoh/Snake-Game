@@ -35,6 +35,9 @@ class UIGameOverState : public State
 private:
     UIUtils ui;
     int RenderGameOverMenu();
+    sound gameoversound;
+
+    bool soundPlayedonce = false;
 
 public:
     UIGameOverState() = default;

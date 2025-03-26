@@ -1,7 +1,8 @@
 #pragma once
-#include "../headers/entity.h"
-#include "../headers/snake.h"
-#include "../headers/render.h"
+#include "entity.h"
+#include "snake.h"
+#include "render.h"
+#include "sounds.h"
 #include <iostream>
 
 enum Direction
@@ -11,8 +12,8 @@ enum Direction
     UP,
     DOWN
 };
-//  FINITE STATE MACHINE //
 
+//  FSM //
 // PURE ABSTARCT CLASS TO MANAGE GAME STATES
 class State
 {
@@ -34,6 +35,7 @@ class PlayState : public State
 private:
     Render render;
     Direction dir;
+    sound gameSound;
 
     int current_score;
     std::shared_ptr<Snake> m_snake;

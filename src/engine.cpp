@@ -63,6 +63,7 @@ void Engine::startGame()
         }
         else if (current_state == 3)
         {
+
             UIGameOverState *gameoverstate = dynamic_cast<UIGameOverState *>(&state_controller.getstate());
             if (gameoverstate->updateState)
             {

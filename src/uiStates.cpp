@@ -107,6 +107,11 @@ void UIGameOverState::m_Render()
 
 void UIGameOverState::m_Update()
 {
+    // if (!soundPlayedonce)
+    // {
+    //     gameoversound.PlayGameOverSound();
+    //     soundPlayedonce = true;
+    // }
     int gameover = RenderGameOverMenu();
     if (gameover == 1 || gameover == 3)
     {
