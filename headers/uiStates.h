@@ -27,6 +27,7 @@ public:
     void m_Render() override;
     void m_KeyboardInput() override;
     int getStateIdentifier() const override;
+    bool close_window = false;
     bool updateState = false;
 };
 
@@ -36,7 +37,6 @@ private:
     UIUtils ui;
     int RenderGameOverMenu();
     sound gameoversound;
-
     bool soundPlayedonce = false;
 
 public:
@@ -46,5 +46,6 @@ public:
     void m_KeyboardInput() override;
     int getStateIdentifier() const override;
     bool updateState = false;
+    bool close_window = false;
     ~UIGameOverState();
 };

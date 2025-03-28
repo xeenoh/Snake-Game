@@ -153,7 +153,6 @@ void PlayState::m_Update()
     if (game_over)
     {
         game_over = false;
-
         m_snake->initialState();
         m_snakeHead = get_head();
         setTargetFrames(NORMAL_SPEED);

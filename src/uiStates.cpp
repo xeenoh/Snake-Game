@@ -73,8 +73,8 @@ void UIMenuState::m_Update()
     }
     else if (main_menu == 1 || main_menu == 3)
     {
+        close_window = true;
         updateState = false; // ensure reseting the state
-        CloseWindow();
     }
 }
 
@@ -115,8 +115,7 @@ void UIGameOverState::m_Update()
     int gameover = RenderGameOverMenu();
     if (gameover == 1 || gameover == 3)
     {
-        updateState = false;
-        CloseWindow();
+        close_window = true;
     }
     else if (gameover == 2)
     {

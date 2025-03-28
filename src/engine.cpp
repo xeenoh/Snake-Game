@@ -33,9 +33,11 @@ void Engine::m_KeyboardInput()
 void Engine::startGame()
 {
     InitWindow(WIDTH, WINDOW_HEIGHT, "SNAKE GAME");
+    void *window = GetWindowHandle();
     GuiLoadStyle("./Styles/style_terminal.rgs");
     state_controller.init();
-    while (!WindowShouldClose())
+    bool window_exist = !WindowShouldClose();
+    while (window_exist)
     {
 
         m_KeyboardInput();
@@ -46,6 +48,9 @@ void Engine::startGame()
         if (current_state == 2)
         {
             UIMenuState *menuState = dynamic_cast<UIMenuState *>(&state_controller.getstate());
+
+            if (menuState->close_window)
+                break;
             if (menuState->updateState) // transition from main menu to play state
             {
                 state_controller.change_state(1);
@@ -55,7 +60,7 @@ void Engine::startGame()
         {
             PlayState *playState = dynamic_cast<PlayState *>(&state_controller.getstate());
             if (IsKeyPressed(KEY_Q))
-                state_controller.add_new_state(2);
+                state_controller.change_state(2);
             if (playState->game_over)
             {
                 state_controller.change_state(3);
@@ -65,6 +70,8 @@ void Engine::startGame()
         {
 
             UIGameOverState *gameoverstate = dynamic_cast<UIGameOverState *>(&state_controller.getstate());
+            if (gameoverstate->close_window)
+                break;
             if (gameoverstate->updateState)
             {
                 std::cout << "Current STATE running is : " << state_controller.get_current_state() << '\n';
@@ -73,6 +80,7 @@ void Engine::startGame()
             }
         }
         state_controller.run_current_state();
+
         EndDrawing();
     }
     CloseWindow();
