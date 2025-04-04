@@ -1,8 +1,13 @@
+
 # Snake Game with Raylib
 
 ## Overview
 
 This is a classic Snake game built using C++ and the Raylib graphics library. The game features a finite state machine (FSM) to handle different game states, including the main menu, gameplay, and game over screen. The project is structured to allow easy modification and extension.
+
+## Preview
+https://github.com/user-attachments/assets/cf89099e-8bf3-43f4-b43c-a7233344cb65
+
 
 ## Features
 
