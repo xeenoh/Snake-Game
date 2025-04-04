@@ -66,12 +66,12 @@ void UIMenuState::m_Render()
 void UIMenuState::m_Update()
 {
     int main_menu = RenderMainMenu();
-    if (main_menu == 2)
+    if (main_menu == 2 || IsKeyPressed(KEY_ENTER))
     {
         std::cout << "\n Play Button is clicked \n";
         updateState = true;
     }
-    else if (main_menu == 1 || main_menu == 3)
+    else if (main_menu == 1 || main_menu == 3 || IsKeyPressed(KEY_ESCAPE))
     {
         close_window = true;
         updateState = false; // ensure reseting the state
@@ -113,11 +113,11 @@ void UIGameOverState::m_Update()
         soundPlayedonce = true;
     }
     int gameover = RenderGameOverMenu();
-    if (gameover == 1 || gameover == 3)
+    if (gameover == 1 || gameover == 3 || IsKeyPressed(KEY_ESCAPE))
     {
         close_window = true;
     }
-    else if (gameover == 2)
+    else if (gameover == 2 || IsKeyPressed(KEY_ENTER))
     {
         updateState = true;
     }

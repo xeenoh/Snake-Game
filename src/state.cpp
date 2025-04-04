@@ -46,8 +46,8 @@ bool PlayState::bodyCollision()
 
 bool PlayState::wallCollision()
 {
-    m_snakeHead = get_head();
-    Vector2 head_pos = m_snakeHead->getPosition();
+    Body snake_body=  m_snake->getBody() ; 
+    Vector2 head_pos = snake_body[0]->getPosition() ; 
 
     if (head_pos.x < 0 || head_pos.x > WIDTH - CELL || head_pos.y < 0 || head_pos.y > HEIGHT - CELL)
     {
@@ -115,16 +115,19 @@ void PlayState::updateSnake()
         std::cout << "You LOST at pos " << m_snakeHead->getPosition().x << ' ' << m_snakeHead->getPosition().y << "\n";
         this->current_score = 0;
         game_over = true;
+        return ; 
+    }else{
+
+        std::shared_ptr<Entity> tail = m_snake->getBody().back();
+        Vector2 tailPos = tail->getPosition();
+
+        tail->setPosition(nextHeadPos());
+        Body new_body = m_snake->getBody();
+        new_body.push_front(tail);
+        new_body.pop_back();
+        m_snake->setBody(new_body);
     }
 
-    std::shared_ptr<Entity> tail = m_snake->getBody().back();
-    Vector2 tailPos = tail->getPosition();
-
-    tail->setPosition(nextHeadPos());
-    Body new_body = m_snake->getBody();
-    new_body.push_front(tail);
-    new_body.pop_back();
-    m_snake->setBody(new_body);
 }
 
 void PlayState::m_Render()
@@ -160,20 +163,22 @@ void PlayState::m_Update()
         dir = RIGHT; // Reset the Direction
         current_score = 0;
         return;
+    }else{
+        if (checkWin())
+        {
+            std::cout << "YOU WON\n";
+        }
+        if (increaseScore(m_collectables.back()))
+        {
+            m_snake->increaseSize();
+            current_score++;
+        }
+        UpdateMusicStream(gameSound.game_music);
+        movePerFrame();
+        ScoreUI();
+        ControlsUI();
+
     }
-    else if (checkWin())
-    {
-        std::cout << "YOU WON\n";
-    }
-    if (increaseScore(m_collectables.back()))
-    {
-        m_snake->increaseSize();
-        current_score++;
-    }
-    UpdateMusicStream(gameSound.game_music);
-    movePerFrame();
-    ScoreUI();
-    ControlsUI();
 }
 
 void PlayState::ScoreUI()
